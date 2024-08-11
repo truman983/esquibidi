@@ -1,0 +1,407 @@
+function createScreenElement(Parent, Classname, Position, Size, BackgroundColor3, BackgroundTransparency, CornerScale, CornerOffset)
+	local GuiParent = Parent
+	local hello = Instance.new(Classname, GuiParent)
+	if Position and Size then
+		hello.Position = UDim2.new(Position[1],Position[2],Position[3],Position[4])
+		hello.Size = UDim2.new(Size[1],Size[2],Size[3],Size[4])
+	end
+	if BackgroundColor3 then
+		hello.BackgroundColor3 = BackgroundColor3
+	end
+	if BackgroundTransparency then
+		hello.BackgroundTransparency = BackgroundTransparency
+	end
+	if CornerScale and CornerOffset then
+		local boo = Instance.new("UICorner", hello)
+		boo.CornerRadius = UDim.new(CornerScale, CornerOffset)
+	end
+	if Classname == "TextLabel" or Classname == "TextButton" then
+		hello.TextColor3 = Color3.fromRGB(191, 191, 191)
+		hello.TextScaled = true
+		hello.TextSize = 14
+		hello.Font = Enum.Font.SourceSans
+		hello.BackgroundTransparency = 1
+		hello.BorderSizePixel = 0
+	end
+	return hello
+end
+function makeToggleButton(Parent, Position)
+	local hello = Instance.new("TextButton", Parent)
+	hello.Size = UDim2.new(0.046, 0,0.046, 0)
+	if Position then
+		hello.Position = UDim2.new(Position[1],Position[2],Position[3],Position[4])
+	end
+	hello.BackgroundColor3 = Color3.fromRGB(5, 59, 255)
+	hello.BackgroundTransparency = 1
+	hello.Text = ""
+	local why = Instance.new("UIStroke", hello)
+	why.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	why.Color = Color3.fromRGB(153, 153, 153)
+	why.Thickness = 2
+	local toggle = false
+	hello.MouseButton1Down:Connect(function()
+		toggle = not toggle
+		if toggle then
+			hello.BackgroundTransparency = 0
+		else
+			hello.BackgroundTransparency = 1
+		end
+
+	end)
+	return hello
+end
+local items = {
+	"Blacklight",
+	"Book",
+	"CodeBreacher",
+	"DwellerPiece",
+	"FlashBeacon",
+	"Flashlight",
+	"Gummylight",
+	"InnerKeyCard",
+	"Lantern",
+	"Medkit",
+	"NormalKeyCard",
+	"RidgeKeyCard",
+	"Splorglight",
+	"WindupLight"
+}
+
+function HideMe(TpStuds)
+	local currentPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+	game.Players.LocalPlayer.Character:MoveTo(game.Players.LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0,TpStuds,0))
+	return currentPos
+end
+function FreezeMe(bool: boolean)
+	
+		for i,v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+			if v:IsA("BasePart") then
+				v.Anchored = bool
+			end
+		end
+	
+end
+
+
+local Light = game:GetService("Lighting")
+
+local defAmbience = Light.Ambient
+local defColorshiftTop = Light.ColorShift_Top
+local defColorshiftBottom = Light.ColorShift_Bottom
+
+function dofullbright()
+	Light.Ambient = Color3.new(1, 1, 1)
+	Light.ColorShift_Bottom = Color3.new(1, 1, 1)
+	Light.ColorShift_Top = Color3.new(1, 1, 1)
+end
+function resetFullBright()
+	Light.Ambient = defAmbience
+	Light.ColorShift_Top = defColorshiftTop
+	Light.ColorShift_Bottom = defColorshiftBottom
+end
+
+
+local hello = createScreenElement(game.Players.LocalPlayer.PlayerGui, "ScreenGui")
+hello.IgnoreGuiInset = true
+local Main = createScreenElement(hello, "Frame",{0.302, 0,0.179, 0} ,{0.396, 0,0.642, 0}, Color3.fromRGB(22, 22, 22), nil, 0,8)
+local FunctionsHolder = createScreenElement(Main, "Frame", {0, 0,0.107, 0}, {1, 0,0.893, 0}, nil, 1, 0, 8)
+local TextLabels = Instance.new("Folder", FunctionsHolder)
+local name = createScreenElement(Main, "TextLabel", {0, 0,0, 0}, {0.322, 0,0.069, 0}, nil, 1, 0, 8)
+local GameName = createScreenElement(Main,"TextLabel", {0.778, 0,0, 0}, {0.222, 0,0.053, 0}, nil, 1, 0, 8)
+local text1 = createScreenElement(TextLabels, "TextLabel", {-0, 0,0, 0}, {0.435, 0,0.1, 0})
+local text2 = createScreenElement(TextLabels, "TextLabel", {-0, 0,0.116, 0}, {0.435, 0,0.1, 0})
+local text3 = createScreenElement(TextLabels, "TextLabel", {-0, 0,0.273, 0}, {0.435, 0,0.1, 0})
+local text4 = createScreenElement(TextLabels, "TextLabel", {-0, 0,0.42, 0}, {0.435, 0,0.1, 0})
+local text5 = createScreenElement(TextLabels, "TextLabel", {0.017, 0,0.59, 0}, {0.435, 0,0.1, 0})
+local text6 = createScreenElement(TextLabels, "TextLabel", {-0, 0,0.745, 0}, {0.435, 0,0.1, 0})
+text6.Text = "Full Bright: "
+text5.Text = "Asset Esp: "
+text4.Text = "Trick Room Esp: "
+text3.Text = "Trick Locker Esp: "
+text2.Text = "Item Esp: "
+text1.Text = "Notify Monster Spawn:"
+name.Text = "Chees's Game Hub V1.0"
+GameName.Text = "Game: Pressure"
+local MonsterNotif = makeToggleButton(FunctionsHolder, {0.476, 0,0.026, 0})
+local ItemEsp = makeToggleButton(FunctionsHolder, {0.476, 0,0.144, 0})
+local MonsterLockerEsp = makeToggleButton(FunctionsHolder, {0.476, 0,0.302, 0})
+local TrickRoomEsp = makeToggleButton(FunctionsHolder, {0.476, 0,0.448, 0})
+local CurrencyEsp = makeToggleButton(FunctionsHolder, {0.476, 0,0.619, 0})
+local FullBrightToggle = makeToggleButton(FunctionsHolder, {0.476, 0,0.774, 0})
+
+function WarnMonster(message, length)
+	local holder = createScreenElement(game.Players.LocalPlayer.PlayerGui, "ScreenGui")
+	holder.IgnoreGuiInset = true
+	local boo =	createScreenElement(holder, "TextLabel", {0.411, 0,0.061, 0}, {0.177, 0,0.051, 0}, nil, 1, nil, nil)
+	boo.Text = message
+	boo.TextColor3 = Color3.fromRGB(255,0,0)
+	
+	if length then
+		game.Debris:AddItem(holder, length)
+	else
+		game.Debris:AddItem(holder, 10)
+	end
+	
+
+end
+
+function addBillBoard(parent, Text, Color, Offset)
+	local gooy = Instance.new("BillboardGui", parent)
+	local label = Instance.new("TextLabel", gooy)
+	label.Text = Text
+	label.Size = UDim2.fromScale(1,1)
+	gooy.Size = UDim2.fromScale(6,2)
+	gooy.StudsOffset = Vector3.new(0,2,0)
+	if Offset then
+		gooy.StudsOffset = Vector3.new(0,Offset,0)
+	end
+	gooy.ResetOnSpawn = false
+	gooy.AlwaysOnTop = true
+	label.BackgroundTransparency = 1
+	label.TextColor3 = Color3.new(1,0,0)
+	label.TextScaled = true
+	if Color then 
+		label.TextColor3 = Color
+	end
+end
+
+local doodoo = false
+local tempPos 
+MonsterNotif.MouseButton1Down:Connect(function()
+	doodoo = not doodoo
+	if doodoo == true then
+		game.Workspace.ChildAdded:Connect(function(child)
+			if doodoo == false then return end
+			if child.Name == "Angler" then
+				WarnMonster("Angler spawned,  hiding...")
+				addBillBoard(child, child.Name)
+				
+				tempPos = HideMe(300)
+				task.wait(0.5)
+				FreezeMe(true)
+				
+			elseif child.Name == "Blitz" then
+				WarnMonster("Blitz spawned, hiding...")
+				addBillBoard(child, child.Name)
+				tempPos = HideMe(300)
+				task.wait(0.5)
+				FreezeMe(true)
+			elseif child.Name == "Chainsmoker" then
+				WarnMonster("Chainsmoker spawned,  hiding...")
+				addBillBoard(child, child.Name)
+				tempPos = HideMe(300)
+				task.wait(0.5)
+				FreezeMe(true)
+			elseif child.Name == "Pinkie" then
+				WarnMonster("Pinkie spawned,  hiding...")
+				addBillBoard(child, child.Name)
+				tempPos = HideMe(300)
+				task.wait(0.5)
+				FreezeMe(true)
+			elseif child.Name == "Pandemonium" then
+				WarnMonster("Pandemonium spawned,  hiding...")
+				addBillBoard(child, child.Name)
+				tempPos = HideMe(300)
+				task.wait(0.5)
+				FreezeMe(true)
+			elseif child.Name == "Froger" then
+				WarnMonster("Froger spawned,  hiding...")
+				addBillBoard(child, child.Name)
+				tempPos = HideMe(300)
+				task.wait(0.5)
+				FreezeMe(true)
+			end
+		end)
+		game.Workspace.ChildRemoved:Connect(function(child)
+			if doodoo == false then return end
+			if child.Name == "Angler" then
+				WarnMonster("unHiding...", 2)
+			
+				FreezeMe(false)
+				task.wait(0.5)
+				game.Players.LocalPlayer.Character:MoveTo(tempPos)
+			elseif child.Name == "Blitz" then
+				WarnMonster("unHiding...", 2)
+				FreezeMe(false)
+				task.wait(0.5)
+				game.Players.LocalPlayer.Character:MoveTo(tempPos)
+			elseif child.Name == "Chainsmoker" then
+				WarnMonster("unHiding...", 2)
+				FreezeMe(false)
+				task.wait(0.5)
+				game.Players.LocalPlayer.Character:MoveTo(tempPos)
+			elseif child.Name == "Pinkie" then
+				WarnMonster("unHiding...", 2)
+				
+				FreezeMe(false)
+				task.wait(0.5)
+				game.Players.LocalPlayer.Character:MoveTo(tempPos)
+			elseif child.Name == "Pandemonium" then
+				WarnMonster("unHiding...", 2)
+				FreezeMe(false)
+				task.wait(0.5)
+				game.Players.LocalPlayer.Character:MoveTo(tempPos)
+			elseif child.Name == "Froger" then
+				WarnMonster("unHiding...", 2)
+				FreezeMe(false)
+				task.wait(0.5)
+				game.Players.LocalPlayer.Character:MoveTo(tempPos)
+			end
+		end)
+	end
+end)
+local bruh = false
+ItemEsp.MouseButton1Down:Connect(function()
+	bruh = not bruh
+	if bruh == false then
+		for i,v in pairs(game.Workspace.Rooms:GetDescendants()) do
+			if table.find(items, v.Name) then 
+			if v:FindFirstChildOfClass("Highlight") or v:FindFirstChildOfClass("BillboardGui") then
+				v.Highlight:Destroy()
+				v.BillboardGui:Destroy()
+			end
+			end
+		end
+	end
+	if bruh == true then
+		while task.wait(1) do 
+			if bruh == false then break end
+			for i,v in pairs(game.Workspace.Rooms:GetDescendants()) do
+				if table.find(items, v.Name) then
+					if not v:FindFirstChild("Highlight") then
+						local ak = Instance.new("Highlight", v) 
+						ak.FillColor = Color3.new(0,1,1)
+						ak.OutlineTransparency = 1
+						addBillBoard(v, v.Name, Color3.new(0,1,1))
+					end
+
+				end
+			end
+		end
+	end
+end)
+local cheese = false
+MonsterLockerEsp.MouseButton1Down:Connect(function()
+	cheese = not cheese
+	if cheese == false then
+		for i,v in pairs(game.Workspace.Rooms:GetDescendants()) do
+			if v.Name == "MonsterLocker" then 
+				if v:FindFirstChildOfClass("Highlight") or v:FindFirstChildOfClass("BillboardGui") then
+					v.Highlight:Destroy()
+					v.BillboardGui:Destroy()
+				end
+			end
+		end
+	end
+	if cheese == true then
+		while task.wait(1) do 
+			if cheese == false then break end
+			for i,v in pairs(game.Workspace.Rooms:GetDescendants()) do
+				if v.Name == "MonsterLocker" then
+					if not v:FindFirstChild("Highlight") then
+						local no = Instance.new("Highlight", v)
+						no.FillColor = Color3.new(0.5,0,1)
+						no.OutlineTransparency = 1
+						addBillBoard(v, "Monster Locker", Color3.new(0.5,0,1))
+					end
+
+				end
+			end
+		end
+	end
+end)
+local potato = false
+TrickRoomEsp.MouseButton1Down:Connect(function()
+	potato = not potato
+	if potato == false then
+		for i,v in pairs(game.Workspace.Rooms:GetDescendants()) do
+			if v.Name == "TricksterRoom" or v.Name == "ServerTrickster" then 
+				if v:FindFirstChildOfClass("Highlight") or v:FindFirstChildOfClass("BillboardGui") then
+					v.Highlight:Destroy()
+					v.BillboardGui:Destroy()
+				end
+			end
+		end
+	end
+	if potato == true then
+		while task.wait(1) do 
+			if potato == false then break end
+			for i,v in pairs(game.Workspace.Rooms:GetDescendants()) do
+				if v.Name == "TricksterRoom" or v.Name == "ServerTrickster" then
+					if not v:FindFirstChild("Highlight") then
+						Instance.new("Highlight", v).OutlineTransparency = 1
+						addBillBoard(v, "Trick Room", Color3.new(1,0,0))
+					end
+
+				end
+			end
+		end
+	end
+end)
+local korn = false
+CurrencyEsp.MouseButton1Down:Connect(function()
+	korn = not korn
+	if korn == false then
+		for i,v in pairs(game.Workspace.Rooms:GetDescendants()) do
+			if string.match(v.Name, "Currency") then 
+				if  v:FindFirstChildOfClass("BillboardGui") then
+					v.BillboardGui:Destroy()
+				end
+			end
+		end
+	end
+	if korn == true then
+		while task.wait(1) do 
+			if korn == false then break end
+			for i,v in pairs(game.Workspace.Rooms:GetDescendants()) do
+				if string.match(v.Name, "Currency") then
+					if not v:FindFirstChild("BillboardGui") then
+						addBillBoard(v, v.Name, Color3.new(1,1,0), 0)
+					end
+
+				end
+			end
+		end
+	end
+end)
+local orange = false
+local connect
+FullBrightToggle.MouseButton1Down:Connect(function()
+	orange = not orange
+	if orange == false then
+		connect:Disconnect()
+		resetFullBright()
+	end
+	if orange == true then
+		dofullbright()
+		connect = Light.LightingChanged:Connect(dofullbright)
+		
+	end
+end)
+
+
+
+
+
+local MouseEnabled = false
+local MouseFrame = createScreenElement(hello, "ImageButton", {0,0,0,0}, {1,0,1,0}, nil, 1, nil, nil)
+MouseFrame.Modal = false
+MouseFrame.ZIndex = -200
+game:GetService("UserInputService").InputBegan:Connect(function(inpObj, isTyping)
+	if not isTyping then
+		if inpObj.KeyCode == Enum.KeyCode.RightControl then
+			hello.Enabled = not hello.Enabled
+			MouseEnabled = not MouseEnabled
+			MouseFrame.Modal = not MouseEnabled
+			game:GetService("UserInputService").MouseIconEnabled = not MouseEnabled
+		end
+	end
+end)
+
+
+
+
+
+
+
+
