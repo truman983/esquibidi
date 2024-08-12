@@ -1,3 +1,4 @@
+```lua
 function createScreenElement(Parent, Classname, Position, Size, BackgroundColor3, BackgroundTransparency, CornerScale, CornerOffset)
 	local GuiParent = Parent
 	local hello = Instance.new(Classname, GuiParent)
@@ -397,11 +398,4 @@ game:GetService("UserInputService").InputBegan:Connect(function(inpObj, isTyping
 		end
 	end
 end)
-
-
-
-
-
-
-
-
+```
